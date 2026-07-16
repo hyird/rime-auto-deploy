@@ -1,40 +1,58 @@
-# My Rime Config
+# Rime 万象拼音一键部署
 
-This repo stores my minimal Rime setup (rime_ice + Squirrel theme).
+这是我的 macOS 鼠须管配置，基于万象拼音标准版 `16.1.2`。仓库只保留一套输入方案，并固化当前使用习惯：
 
-## Structure
+- 微信浅色 / 深色皮肤；
+- 新输入框默认中文；
+- 单按 `Shift` 在 Rime 内部切换“中 / 英”；
+- 中文模式下 `Shift + 字母` 直接输入大写英文，不进入中文候选；
+- 自动词频学习、英文混输和拆字反查；
+- 不包含雾凇、九宫格、编译缓存、用户词频或备份。
 
-- `rime/`: files that will be deployed into your Rime user directory
-- `install.sh`: one-click deploy script
-- `sync-from-local.sh`: pull current local config into this repo
-
-## One-click deploy
-
-### macOS
+## 一键安装
 
 ```bash
-git clone <your-repo-url>
-cd <repo-name>
-chmod +x install.sh
+curl -fsSL https://raw.githubusercontent.com/hyird/rime-auto-deploy/main/install.sh | bash
+```
+
+脚本会在缺少鼠须管时尝试通过 Homebrew 安装，然后覆盖 `~/Library/Rime` 中的配置源、清除旧方案并重新部署。
+
+安装过程不会创建持久备份。以下个人状态会保留：
+
+- `installation.yaml` 和 `user.yaml`；
+- 当前万象中文、英文和手动调序用户数据库。
+
+雾凇和 `melt_eng` 的旧用户数据库会随旧方案一起删除。
+
+## 从本地仓库安装
+
+```bash
+git clone https://github.com/hyird/rime-auto-deploy.git
+cd rime-auto-deploy
 ./install.sh
 ```
 
-### Custom target dir
+可使用自定义目标目录进行测试：
 
 ```bash
-RIME_USER_DIR=/path/to/rime ./install.sh
+RIME_USER_DIR=/tmp/Rime RIME_SKIP_FRONTEND_INSTALL=1 RIME_SKIP_RELOAD=1 ./install.sh
 ```
 
-## Update repo from local machine
+## 同步本机配置
 
 ```bash
-chmod +x sync-from-local.sh
 ./sync-from-local.sh
 ```
 
-## Notes
+同步脚本只复制可部署配置，不会提交 `build/`、`*.userdb/`、本机身份文件或备份。
 
-- `install.sh` backs up overwritten files to `TARGET_DIR.backup.TIMESTAMP`.
-- On macOS, if Squirrel is missing, script tries to install it via `brew install --cask squirrel`.
-- On Linux, install `fcitx5-rime` or `ibus-rime` first, then run the script.
-- On macOS with Squirrel, script runs `--build` and `--reload` automatically.
+## 校验
+
+```bash
+bash -n install.sh sync-from-local.sh scripts/validate.sh
+./scripts/validate.sh rime
+```
+
+## 上游与许可
+
+词库和方案来自 [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang)，按其 CC BY 4.0 许可分发；许可文本见 `LICENSES/WANXIANG-CC-BY-4.0.txt`。
