@@ -12,7 +12,7 @@
 ## 一键安装
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hyird/rime-auto-deploy/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hyird/rime-auto-deploy/35ba2dc/install.sh | bash
 ```
 
 脚本会在缺少鼠须管时尝试通过 Homebrew 安装，然后覆盖 `~/Library/Rime` 中的配置源、清除旧方案并重新部署。
