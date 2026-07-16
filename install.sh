@@ -42,7 +42,7 @@ prepare_source() {
   command -v tar >/dev/null 2>&1 || die "缺少 tar"
 
   TEMP_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/rime-auto-deploy.XXXXXX")"
-  echo "下载 $REPO_SLUG@$REPO_REF…"
+  echo "下载 ${REPO_SLUG}@${REPO_REF}..."
   curl -fsSL "https://github.com/$REPO_SLUG/archive/$REPO_REF.tar.gz" |
     tar -xzf - -C "$TEMP_ROOT"
   archive_root="$(find "$TEMP_ROOT" -mindepth 1 -maxdepth 1 -type d -print | head -n 1)"
